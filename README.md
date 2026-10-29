@@ -49,6 +49,21 @@ go mod download
 go run main.go
 ```
 
+### Rodando com Docker
+
+Com o `.env` configurado (passo 2), o Docker Compose lê as variáveis dele antes do build:
+
+```bash
+docker compose up --build -d
+```
+
+Para ver os logs e parar:
+
+```bash
+docker compose logs -f
+docker compose down
+```
+
 ## Endpoints da API
 
 ### 1. Verificar status e obter comentários
