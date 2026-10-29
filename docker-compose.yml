@@ -1,0 +1,24 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: api-comentarios-twitch-ai
+    container_name: api-comentarios-twitch-ai
+    restart: unless-stopped
+    # O Compose lê o .env da raiz antes do build e interpola as variáveis abaixo
+    env_file:
+      - .env
+    environment:
+      TWITCH_CLIENT_ID: ${TWITCH_CLIENT_ID:?defina TWITCH_CLIENT_ID no .env}
+      TWITCH_CLIENT_SECRET: ${TWITCH_CLIENT_SECRET:?defina TWITCH_CLIENT_SECRET no .env}
+      TWITCH_OAUTH_TOKEN: ${TWITCH_OAUTH_TOKEN:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      PORT: ${PORT:-8080}
+    ports:
+      - "${PORT:-8080}:${PORT:-8080}"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:${PORT:-8080}/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
